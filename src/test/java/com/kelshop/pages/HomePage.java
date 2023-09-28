@@ -6,16 +6,16 @@ import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
-import static java.util.Collections.*;
+
 
 public class HomePage {
 
@@ -60,14 +60,22 @@ public class HomePage {
         SelenideElement element = $(byText(sortName));
         element.shouldBe(visible, Duration.ofSeconds(5));
         element.click();
-        sleep(3000);
 
+        listOfElements.get(0).ancestor("article").$("button").should(enabled);
         List<String> nameOfBooks = listOfElements
                 .stream()
                 .map(SelenideElement::getText)
                 .collect(Collectors.toList());
 
         Assertions.assertTrue(nameOfBooks.get(0).startsWith("A"));
+    }
+
+    public void addBookToCart() {
+        listOfElements.get(0).ancestor("article").$("button").should(enabled);
+        listOfElements.get(0).ancestor("article").$("button").click();
+        String textAfter = $("[role=\"presentation\"] .t-mini").getText();
+        Assertions.assertTrue(Integer.parseInt(textAfter) == 1);
+        $("[role=\"presentation\"] .t-mini").click();
     }
 
 

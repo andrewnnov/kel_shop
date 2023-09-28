@@ -38,4 +38,10 @@ public class TestExample {
         homePage.chooseSort("Nombre A-Z");
     }
 
+    @Test
+    public void addBookToCartTest() {
+        homePage.findOneBook("ANIMALS - Very First Words Library");
+        homePage.addBookToCart();
+    }
+
 }
